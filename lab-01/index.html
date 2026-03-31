@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Startup Website Demo</title>
+</head>
+
+<body>
+
+    <h1 id="title">Welcome to My Startup 🚀</h1>
+    <p id="text">Click buttons to see magic!</p>
+
+    <!-- Buttons -->
+    <button onclick="changeText()">Change Text</button>
+    <button onclick="changeStyle()">Change Style</button>
+    <button onclick="askName()">Enter Name</button>
+    <button onclick="printPage()">Print Page</button>
+
+    <!-- Form -->
+    <form onsubmit="handleSubmit(event)">
+        <input type="text" id="username" placeholder="Enter name">
+        <button type="submit">Submit</button>
+    </form>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
