@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dev Portfolio | JS Lab Task 4</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #13131a;
+      --card: #1a1a24;
+      --border: #2a2a3a;
+      --accent: #7c6cfc;
+      --accent2: #fc6c8f;
+      --accent3: #6cfcd8;
+      --text: #e8e8f0;
+      --muted: #7070a0;
+      --font-display: 'Syne', sans-serif;
+      --font-mono: 'DM Mono', monospace;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-display);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* noise overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* NAVBAR */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 4rem;
+      background: rgba(10, 10, 15, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--accent);
+    }
+
+    .logo span {
+      color: var(--accent2);
+    }
+
+    nav ul {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    nav ul a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover {
+      color: var(--text);
+    }
+
+    /* SECTIONS */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 6rem 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    section:first-of-type {
+      padding-top: 9rem;
+    }
+
+    .section-tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--accent);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border: 1px solid var(--accent);
+      padding: 0.25rem 0.75rem;
+      border-radius: 2px;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 .line2 {
+      color: var(--accent);
+    }
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 2rem;
+    }
+
+    .subtitle {
+      font-family: var(--font-mono);
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 2.5rem;
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    /* HERO DYNAMIC INFO */
+    .hero-stats {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .stat-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.5rem;
+      min-width: 140px;
+    }
+
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--accent3);
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      border-radius: 6px;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #9b8dff;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--accent2);
+      border: 1.5px solid var(--accent2);
+      margin-left: 1rem;
+    }
+
+    .btn-outline:hover {
+      background: var(--accent2);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1.2rem;
+      font-size: 0.8rem;
+    }
+
+    /* CARDS */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--accent3);
+      font-family: var(--font-mono);
+    }
+
+    /* OUTPUT DISPLAY */
+    .output-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 6px;
+      padding: 1rem 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--accent3);
+      margin-top: 1rem;
+      min-height: 48px;
+      line-height: 1.6;
+    }
+
+    /* GRID */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    /* SKILLS */
+    .skill-bar-wrap {
+      margin-bottom: 1.2rem;
+    }
+
+    .skill-name {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .skill-bar {
+      height: 6px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .skill-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 99px;
+      width: 0;
+      transition: width 1s ease;
+    }
+
+    /* PROFILE OBJECT SECTION */
+    .profile-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .profile-display {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+    }
+
+    .profile-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+
+    .profile-row:last-child {
+      border-bottom: none;
+    }
+
+    .profile-key {
+      color: var(--muted);
+    }
+
+    .profile-val {
+      color: var(--accent3);
+      font-weight: 500;
+    }
+
+    /* INPUT STYLED */
+    input[type="text"],
+    input[type="number"],
+    select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.6rem 1rem;
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      width: 100%;
+      margin-bottom: 0.8rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: var(--accent);
+    }
+
+    label {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+      display: block;
+      margin-bottom: 0.3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* POPUP SECTION */
+    .popup-btns {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+
+    /* EVENT SECTION */
+    .hover-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 1rem;
+      color: var(--muted);
+    }
+
+    .hover-card:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      transform: scale(1.03);
+    }
+
+    .live-input-display {
+      font-family: var(--font-mono);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent2);
+      margin-top: 0.5rem;
+      min-height: 3rem;
+      letter-spacing: -0.02em;
+    }
+
+    /* DIVIDER */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1rem 0 2rem;
+    }
+
+    /* CONSOLE LOG STYLE */
+    .console-log {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 1rem 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: #7ee787;
+      margin-top: 1rem;
+      max-height: 160px;
+      overflow-y: auto;
+      line-height: 1.8;
+    }
+
+    .console-log .log-line {
+      color: #79c0ff;
+    }
+
+    .console-log .log-line span {
+      color: #7ee787;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 3rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-up {
+      animation: fadeUp 0.6s ease both;
+    }
+
+    .delay-1 {
+      animation-delay: 0.1s;
+    }
+
+    .delay-2 {
+      animation-delay: 0.2s;
+    }
+
+    .delay-3 {
+      animation-delay: 0.3s;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 1rem 1.5rem;
+      }
+
+      section {
+        padding: 4rem 1.5rem;
+      }
+
+      .grid-2,
+      .grid-3,
+      .profile-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 2.8rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">dev<span>.</span>portfolio</div>
+    <ul>
+      <li><a href="#variables">Variables</a></li>
+      <li><a href="#functions">Functions</a></li>
+      <li><a href="#objects">Objects</a></li>
+      <li><a href="#popups">Popups</a></li>
+      <li><a href="#events">Events</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===================== SECTION 1: VARIABLES ===================== -->
+  <section id="variables">
+    <div class="section-tag">01 — Variables</div>
+    <h1 class="fade-up">Hi, I'm <br><span class="line2" id="heroName">Hasiya</span></h1>
+    <p class="subtitle fade-up delay-1" id="heroRole">Full Stack Developer · 2 years experience</p>
+
+    <div class="hero-stats fade-up delay-2">
+      <div class="stat-box">
+        <div class="stat-label">Experience</div>
+        <div class="stat-value" id="expDisplay">2 yrs</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Projects Done</div>
+        <div class="stat-value" id="projectCount">12</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Status</div>
+        <div class="stat-value" id="statusDisplay" style="font-size:1rem; color: var(--accent3);">Available</div>
+      </div>
+    </div>
+
+    <div class="fade-up delay-3">
+      <button class="btn btn-primary" onclick="incrementExperience()">+ Add 1 Year Experience</button>
+      <button class="btn btn-outline" onclick="toggleStatus()">Toggle Availability</button>
+    </div>
+
+    <div class="output-box" id="varOutput">// Variable values will appear here after interaction</div>
+
+    <div class="console-log" id="varConsole">
+      <div class="log-line">> <span>const name = "Ravi Kumar"</span></div>
+      <div class="log-line">> <span>let experience = 2</span></div>
+      <div class="log-line">> <span>let status = "Available"</span></div>
+      <div class="log-line">> <span>const role = "Full Stack Developer"</span></div>
+    </div>
+  </section>
+
+  <!-- ===================== SECTION 2: FUNCTIONS ===================== -->
+  <section id="functions">
+    <div class="section-tag">02 — Functions</div>
+    <h2>Skills & Calculations</h2>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">// Function Declaration</div>
+        <p style="color:var(--muted); font-size:0.85rem; margin-bottom:1rem;">Calculate total project value</p>
+        <label>Number of Projects</label>
+        <input type="number" id="projInput" value="5" min="1" />
+        <label>Rate per Project (₹)</label>
+        <input type="number" id="rateInput" value="15000" min="1000" />
+        <button class="btn btn-primary btn-sm" onclick="calculateValue()">Calculate</button>
+        <div class="output-box" id="fnDeclOutput">// Result appears here</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">// Function Expression</div>
+        <p style="color:var(--muted); font-size:0.85rem; margin-bottom:1rem;">Generate welcome message</p>
+        <label>Your Name</label>
+        <input type="text" id="welcomeInput" placeholder="Enter your name" />
+        <button class="btn btn-primary btn-sm" onclick="showWelcome()">Generate Message</button>
+        <div class="output-box" id="fnExprOutput">// Message appears here</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">// Arrow Function</div>
+        <p style="color:var(--muted); font-size:0.85rem; margin-bottom:1rem;">Calculate skill percentage</p>
+        <label>Skill Score (out of 10)</label>
+        <input type="number" id="skillScore" value="8" min="1" max="10" />
+        <button class="btn btn-primary btn-sm" onclick="calcSkillPercent()">Convert to %</button>
+        <div class="output-box" id="arrowOutput">// Percentage appears here</div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">// Function with Return Value</div>
+        <p style="color:var(--muted); font-size:0.85rem; margin-bottom:1rem;">Toggle feature state</p>
+        <div class="output-box" id="toggleOutput">Feature State: <strong>INACTIVE</strong></div>
+        <br />
+        <button class="btn btn-outline btn-sm" onclick="toggleFeature()">Toggle State</button>
+      </div>
+    </div>
+
+    <!-- Skills with function-driven bars -->
+    <div class="card" style="margin-top:1rem;">
+      <div class="card-title">// Reusable Function — Skill Bars</div>
+      <p style="color:var(--muted); font-size:0.85rem; margin-bottom:1.5rem;">Same renderSkill() function called for
+        each skill</p>
+      <div id="skillBars"></div>
+      <button class="btn btn-primary btn-sm" onclick="renderAllSkills()" style="margin-top:1rem;">Load Skills</button>
+    </div>
+  </section>
+
+  <!-- ===================== SECTION 3: OBJECTS + METHODS ===================== -->
+  <section id="objects">
+    <div class="section-tag">03 & 04 — Objects & Methods</div>
+    <h2>Profile Object</h2>
+
+    <div class="profile-grid">
+      <div>
+        <div class="profile-display" id="profileDisplay">
+          <div class="profile-row"><span class="profile-key">name</span><span class="profile-val" id="pName">Ravi
+              Kumar</span></div>
+          <div class="profile-row"><span class="profile-key">age</span><span class="profile-val" id="pAge">21</span>
+          </div>
+          <div class="profile-row"><span class="profile-key">role</span><span class="profile-val" id="pRole">Full Stack
+              Developer</span></div>
+          <div class="profile-row"><span class="profile-key">location</span><span class="profile-val"
+              id="pLocation">Hyderabad</span></div>
+          <div class="profile-row"><span class="profile-key">available</span><span class="profile-val"
+              id="pAvail">true</span></div>
+        </div>
+
+        <div class="output-box" id="objOutput" style="margin-top:1rem;">// Object access output here</div>
+
+        <div style="margin-top:1rem; display:flex; gap:0.8rem; flex-wrap:wrap;">
+          <button class="btn btn-primary btn-sm" onclick="accessDotNotation()">Dot Notation</button>
+          <button class="btn btn-outline btn-sm" onclick="accessBracketNotation()">Bracket Notation</button>
+          <button class="btn btn-primary btn-sm" onclick="logObject()">Console Log Object</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">// Update Profile (Method)</div>
+        <p style="color:var(--muted); font-size:0.8rem; margin-bottom:1.2rem;">Uses <code
+            style="color:var(--accent2)">this</code> keyword inside method</p>
+        <label>Name</label>
+        <input type="text" id="newName" placeholder="New name" />
+        <label>Role</label>
+        <input type="text" id="newRole" placeholder="New role" />
+        <label>Location</label>
+        <input type="text" id="newLocation" placeholder="New location" />
+        <button class="btn btn-primary btn-sm" onclick="updateProfile()">Update Profile (Method)</button>
+        <div class="output-box" id="methodOutput">// Method result here</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SECTION 5: POPUPS ===================== -->
+  <section id="popups">
+    <div class="section-tag">05 — Pop-up Boxes</div>
+    <h2>Interactive Dialogs</h2>
+
+    <div class="grid-3">
+      <div class="card" style="text-align:center;">
+        <div class="card-title">alert()</div>
+        <p style="color:var(--muted); font-size:0.82rem; margin-bottom:1.5rem;">Notify user after profile save</p>
+        <button class="btn btn-primary" onclick="showAlert()">Show Alert</button>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div class="card-title">confirm()</div>
+        <p style="color:var(--muted); font-size:0.82rem; margin-bottom:1.5rem;">Confirm before deleting project</p>
+        <button class="btn btn-outline" onclick="showConfirm()">Show Confirm</button>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div class="card-title">prompt()</div>
+        <p style="color:var(--muted); font-size:0.82rem; margin-bottom:1.5rem;">Ask visitor for their name</p>
+        <button class="btn btn-primary" onclick="showPrompt()">Show Prompt</button>
+      </div>
+    </div>
+
+    <div class="output-box" id="popupOutput">// User response from popups appears here</div>
+  </section>
+
+  <!-- ===================== SECTION 6: EVENTS ===================== -->
+  <section id="events">
+    <div class="section-tag">06 — Events & Event Listeners</div>
+    <h2>Interactive Events</h2>
+
+    <div class="grid-2">
+      <!-- Click event -->
+      <div class="card">
+        <div class="card-title">// click event — Load Project</div>
+        <p style="color:var(--muted); font-size:0.82rem; margin-bottom:1rem;">Click to load a random project card</p>
+        <button class="btn btn-primary" id="loadProjectBtn">Load Random Project</button>
+        <div class="output-box" id="clickOutput">// Project info loads here on click</div>
+      </div>
+
+      <!-- mouseover event -->
+      <div class="card">
+        <div class="card-title">// mouseover event — Style Change</div>
+        <p style="color:var(--muted); font-size:0.82rem; margin-bottom:1rem;">Hover over the card below</p>
+        <div class="hover-card" id="hoverCard">🖱️ Hover over me!</div>
+        <div class="output-box" id="hoverOutput">// Hover state logged here</div>
+      </div>
+
+      <!-- input event -->
+      <div class="card">
+        <div class="card-title">// input event — Live Preview</div>
+        <p style="color:var(--muted); font-size:0.82rem; margin-bottom:1rem;">Type your name to see live preview</p>
+        <label>Your Name</label>
+        <input type="text" id="liveInput" placeholder="Start typing..." />
+        <div class="live-input-display" id="liveOutput">—</div>
+      </div>
+
+      <!-- keydown event -->
+      <div class="card">
+        <div class="card-title">// keydown event — Key Logger</div>
+        <p style="color:var(--muted); font-size:0.82rem; margin-bottom:1rem;">Press any key while focused below</p>
+        <input type="text" id="keyInput" placeholder="Click here then press a key" />
+        <div class="output-box" id="keyOutput">// Key pressed appears here</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Built with vanilla HTML · CSS · JavaScript &nbsp;|&nbsp; JS Lab Task 4 &nbsp;|&nbsp; Portfolio Theme
+  </footer>
+
+  <script>
+    // ============================================================
+    // SECTION 1: VARIABLES
+    // ============================================================
+
+    const developerName = "Ravi Kumar";       // const — cannot reassign
+    const role = "Full Stack Developer";       // const
+    let experience = 2;                        // let — can reassign
+    let status = "Available";                  // let
+    let projectsDone = 12;                     // let
+
+    // display on DOM
+    document.getElementById("heroName").textContent = developerName;
+    document.getElementById("heroRole").textContent = role + " · " + experience + " years experience";
+    document.getElementById("expDisplay").textContent = experience + " yrs";
+    document.getElementById("projectCount").textContent = projectsDone;
+    document.getElementById("statusDisplay").textContent = status;
+
+    // update variable dynamically
+    function incrementExperience() {
+      experience += 1;  // reassignment using let
+      document.getElementById("expDisplay").textContent = experience + " yrs";
+      document.getElementById("heroRole").textContent = role + " · " + experience + " years experience";
+      document.getElementById("varOutput").textContent =
+      \`let experience updated → \${experience} years\\nconst name stays → "\${developerName}" (cannot reassign)\`;
+
+    // add console log line
+    const c = document.getElementById("varConsole");
+    const line = document.createElement("div");
+    line.className = "log-line";
+    line.innerHTML = \`> <span>experience = \${experience} // updated via let</span>\`;
+    c.appendChild(line);
+    c.scrollTop = c.scrollHeight;
+  }
+
+  function toggleStatus() {
+    status = status === "Available" ? "Busy" : "Available";
+    document.getElementById("statusDisplay").textContent = status;
+    document.getElementById("statusDisplay").style.color = status === "Available" ? "var(--accent3)" : "var(--accent2)";
+    document.getElementById("varOutput").textContent = \`let status reassigned → "\${status}"\`;
+  }
+
+  // ============================================================
+  // SECTION 2: FUNCTIONS
+  // ============================================================
+
+  // function declaration
+  function calculateValue() {
+    const projects = parseInt(document.getElementById("projInput").value);
+    const rate = parseInt(document.getElementById("rateInput").value);
+    const total = projects * rate;
+    document.getElementById("fnDeclOutput").textContent =
+      \`\${projects} projects × ₹\${rate.toLocaleString()} = ₹\${total.toLocaleString()} total value\`;
+  }
+
+  // function expression
+  const generateWelcome = function(name) {
+    return \`Welcome to my portfolio, \${name}! Let's build something amazing together. 🚀\`;
+  };
+  function showWelcome() {
+    const name = document.getElementById("welcomeInput").value || "Visitor";
+    document.getElementById("fnExprOutput").textContent = generateWelcome(name);
+  }
+
+  // arrow function with return value
+  const toPercent = (score) => ((score / 10) * 100).toFixed(0) + "%";
+
+  function calcSkillPercent() {
+    const score = document.getElementById("skillScore").value;
+    document.getElementById("arrowOutput").textContent =
+      \`Score \${score}/10 → \${toPercent(score)} proficiency\`;
+  }
+
+  // toggle function — returns new state
+  let featureActive = false;
+  function toggleFeature() {
+    featureActive = !featureActive;
+    const state = featureActive ? "ACTIVE ✅" : "INACTIVE ❌";
+    document.getElementById("toggleOutput").innerHTML = \`Feature State: <strong>\${state}</strong>\`;
+    return featureActive;
+  }
+
+  // reusable function — called multiple times
+  function renderSkill(name, percent) {
+    return \`
+      <div class="skill-bar-wrap">
+        <div class="skill-name"><span>\${name}</span><span>\${percent}%</span></div>
+        <div class="skill-bar">
+          <div class="skill-fill" data-width="\${percent}"></div>
+        </div>
+      </div>\`;
+  }
+
+  function renderAllSkills() {
+    const skills = [
+      { name: "HTML & CSS", percent: 90 },
+      { name: "JavaScript", percent: 78 },
+      { name: "PHP", percent: 65 },
+      { name: "MySQL", percent: 72 },
+      { name: "Python", percent: 60 },
+    ];
+    const container = document.getElementById("skillBars");
+    container.innerHTML = skills.map(s => renderSkill(s.name, s.percent)).join("");
+    // animate bars
+    setTimeout(() => {
+      document.querySelectorAll(".skill-fill").forEach(bar => {
+        bar.style.width = bar.dataset.width + "%";
+      });
+    }, 100);
+  }
+
+  // ============================================================
+  // SECTION 3 & 4: OBJECTS & METHODS
+  // ============================================================
+
+  const developer = {
+    name: "Ravi Kumar",
+    age: 21,
+    role: "Full Stack Developer",
+    location: "Hyderabad",
+    available: true,
+
+    // method using 'this'
+    updateDetails: function(newName, newRole, newLoc) {
+      this.name = newName || this.name;
+      this.role = newRole || this.role;
+      this.location = newLoc || this.location;
+      return \`Profile updated! Now: \${this.name} — \${this.role} from \${this.location}\`;
+    },
+
+    // method to toggle availability
+    toggleAvailability: function() {
+      this.available = !this.available;
+      return this.available;
+    }
+  };
+
+  function refreshProfileDisplay() {
+    document.getElementById("pName").textContent = developer.name;
+    document.getElementById("pAge").textContent = developer.age;
+    document.getElementById("pRole").textContent = developer.role;
+    document.getElementById("pLocation").textContent = developer.location;
+    document.getElementById("pAvail").textContent = String(developer.available);
+  }
+
+  // dot notation
+  function accessDotNotation() {
+    document.getElementById("objOutput").textContent =
+      \`Dot notation → developer.name = "\${developer.name}"\\ndeveloper.role = "\${developer.role}"\`;
+  }
+
+  // bracket notation
+  function accessBracketNotation() {
+    document.getElementById("objOutput").textContent =
+      \`Bracket notation → developer["location"] = "\${developer["location"]}"\\ndeveloper["age"] = \${developer["age"]}\`;
+  }
+
+  // console log object
+  function logObject() {
+    console.log(developer);
+    document.getElementById("objOutput").textContent =
+      \`Object logged to console!\\n\${JSON.stringify(developer, null, 2)}\`;
+  }
+
+  // update via method — triggered by user action
+  function updateProfile() {
+    const n = document.getElementById("newName").value;
+    const r = document.getElementById("newRole").value;
+    const l = document.getElementById("newLocation").value;
+
+    if (!n && !r && !l) {
+      document.getElementById("methodOutput").textContent = "Please fill at least one field!";
+      return;
+    }
+
+    const result = developer.updateDetails(n, r, l);  // method call using 'this'
+    refreshProfileDisplay();
+    document.getElementById("methodOutput").textContent = result;
+  }
+
+  // ============================================================
+  // SECTION 5: POPUPS
+  // ============================================================
+
+  function showAlert() {
+    alert("✅ Profile saved successfully!\\nYour portfolio data has been updated.");
+    document.getElementById("popupOutput").textContent = "alert() shown → User acknowledged the notification.";
+  }
+
+  function showConfirm() {
+    const confirmed = confirm("Are you sure you want to delete this project?\\nThis action cannot be undone.");
+    if (confirmed) {
+      document.getElementById("popupOutput").textContent = "confirm() → User clicked OK → Project deleted!";
+    } else {
+      document.getElementById("popupOutput").textContent = "confirm() → User clicked Cancel → Action aborted.";
+    }
+  }
+
+  function showPrompt() {
+    const visitorName = prompt("Welcome! What's your name?", "");
+    if (visitorName && visitorName.trim() !== "") {
+      document.getElementById("popupOutput").textContent =
+        \`prompt() → User entered: "\${visitorName}" → Hello \${visitorName}, welcome to my portfolio!\`;
+    } else {
+      document.getElementById("popupOutput").textContent = "prompt() → User cancelled or left blank.";
+    }
+  }
+
+  // ============================================================
+  // SECTION 6: EVENTS & EVENT LISTENERS (addEventListener)
+  // ============================================================
+
+  const projects = [
+    { name: "Loan Management System", tech: "PHP · MySQL · JS", status: "In Progress" },
+    { name: "E-Commerce Store", tech: "React · Node.js · MongoDB", status: "Completed" },
+    { name: "Portfolio Website", tech: "HTML · CSS · JS", status: "Completed" },
+    { name: "Chat Application", tech: "Socket.io · Express", status: "Planned" },
+  ];
+
+  // click event — modify content
+  document.getElementById("loadProjectBtn").addEventListener("click", function() {
+    const p = projects[Math.floor(Math.random() * projects.length)];
+    document.getElementById("clickOutput").textContent =
+      \`Project: \${p.name}\\nTech Stack: \${p.tech}\\nStatus: \${p.status}\`;
+  });
+
+  // mouseover event — modify style/attribute
+  const hoverCard = document.getElementById("hoverCard");
+  hoverCard.addEventListener("mouseover", function() {
+    document.getElementById("hoverOutput").textContent = "mouseover fired → Style changed (background + color)";
+  });
+  hoverCard.addEventListener("mouseout", function() {
+    document.getElementById("hoverOutput").textContent = "mouseout fired → Style reset to default";
+  });
+
+  // input event — live content update
+  document.getElementById("liveInput").addEventListener("input", function() {
+    const val = this.value;
+    document.getElementById("liveOutput").textContent = val || "—";
+  });
+
+  // keydown event — modify content
+  document.getElementById("keyInput").addEventListener("keydown", function(e) {
+    document.getElementById("keyOutput").textContent =
+      \`Key pressed: "\${e.key}"  |  KeyCode: \${e.keyCode}  |  Shift: \${e.shiftKey}\`;
+  });
+
+  // ============================================================
+  // INIT
+  // ============================================================
+  renderAllSkills();
+
+  </script>
+</body>
+
+</html>
