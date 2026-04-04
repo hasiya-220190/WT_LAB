@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f4ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 420px;
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            color: #1a1a2e;
+            margin-bottom: 0.3rem;
+        }
+
+        p.sub {
+            color: #888;
+            font-size: 0.85rem;
+            margin-bottom: 1.8rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 0.35rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            margin-bottom: 1.2rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: #6c63ff;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.85rem;
+            background: #6c63ff;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #5a52d5;
+        }
+
+        .link {
+            text-align: center;
+            margin-top: 1.2rem;
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .link a {
+            color: #6c63ff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card">
+        <h2>Create Account</h2>
+        <p class="sub">Register to get started</p>
+        <form action="register.php" method="POST">
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Enter username" required />
+
+            <label>Email</label>
+            <input type="email" name="email" placeholder="Enter email" required />
+
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Enter password" required />
+
+            <button type="submit">Register</button>
+        </form>
+        <div class="link">Already have an account? <a href="login.html">Login</a></div>
+    </div>
+</body>
+
+</html>
