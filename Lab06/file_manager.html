@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mini File Manager — UI Preview</title>
+    <style>
+        :root {
+            --bg: #0d1117;
+            --surface: #161b22;
+            --card: #0d1117;
+            --border: #30363d;
+            --border2: #21262d;
+            --accent: #58a6ff;
+            --green: #3fb950;
+            --red: #f85149;
+            --yellow: #d29922;
+            --muted: #8b949e;
+            --text: #e6edf3;
+            --mono: 'Consolas', 'Courier New', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 1.5rem;
+        }
+
+        nav {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .logo {
+            font-size: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-icon {
+            width: 30px;
+            height: 30px;
+            background: #1d2d3e;
+            border-radius: 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .logo-sub {
+            color: var(--muted);
+            font-weight: 400;
+            font-size: 12px;
+        }
+
+        .nav-stats {
+            margin-left: auto;
+            display: flex;
+            gap: 18px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .nav-stats strong {
+            color: var(--text);
+        }
+
+        .nav-path {
+            font-family: var(--mono);
+            font-size: 11px;
+            background: var(--border2);
+            padding: 2px 8px;
+            border-radius: 5px;
+            color: var(--accent);
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 14px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 11px 16px;
+            border-bottom: 1px solid var(--border2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .07em;
+        }
+
+        .count-badge {
+            background: #1d2d3e;
+            color: var(--accent);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            border: 1px solid #2d4a6a;
+        }
+
+        .drop-zone {
+            margin: 14px;
+            border: 1.5px dashed var(--border);
+            border-radius: 10px;
+            padding: 28px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color .15s, background .15s;
+        }
+
+        .drop-zone:hover {
+            border-color: var(--accent);
+            background: rgba(88, 166, 255, .04);
+        }
+
+        .drop-icon {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .drop-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .drop-sub {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 3px;
+        }
+
+        .chosen {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--yellow);
+            margin-top: 8px;
+            min-height: 16px;
+        }
+
+        .btn-upload {
+            display: block;
+            margin: 8px 14px 14px;
+            padding: 10px;
+            background: linear-gradient(135deg, #1d3a6b, #1a2d55);
+            color: var(--accent);
+            border: 1px solid #2d4a8a;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: opacity .15s;
+        }
+
+        .btn-upload:hover {
+            opacity: .85;
+        }
+
+        .alert {
+            margin: 0 14px 12px;
+            padding: 9px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .alert-success {
+            background: #0a2a1a;
+            border: 1px solid #1a4a2a;
+            color: #3fb950;
+        }
+
+        .alert-error {
+            background: #2a0a0a;
+            border: 1px solid #4a1a1a;
+            color: #f85149;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th {
+            padding: 8px 14px;
+            text-align: left;
+            font-size: 10.5px;
+            text-transform: uppercase;
+            letter-spacing: .07em;
+            color: var(--muted);
+            font-weight: 600;
+            background: #0d1117;
+            border-bottom: 1px solid var(--border2);
+        }
+
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border2);
+            vertical-align: middle;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover td {
+            background: rgba(255, 255, 255, .02);
+        }
+
+        .fcell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .ficon {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .fname {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--text);
+            word-break: break-all;
+        }
+
+        .fsize {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .fdate {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .fmime {
+            font-size: 11px;
+            color: #6e7681;
+        }
+
+        .acts {
+            display: flex;
+            gap: 5px;
+        }
+
+        .btn-dl {
+            background: #0a2a1a;
+            color: var(--green);
+            border: 1px solid #1a4a2a;
+            border-radius: 6px;
+            padding: 5px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-del {
+            background: #2a0a0a;
+            color: var(--red);
+            border: 1px solid #4a1a1a;
+            border-radius: 6px;
+            padding: 5px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-dl:hover,
+        .btn-del:hover {
+            opacity: .75;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 16px;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .empty-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+            opacity: .5;
+        }
+
+        footer {
+            text-align: center;
+            padding: 16px;
+            font-size: 11px;
+            color: var(--muted);
+            border-top: 1px solid var(--border2);
+            margin-top: 8px;
+        }
+
+        footer code {
+            font-family: var(--mono);
+            background: var(--border2);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-size: 10px;
+            color: var(--accent);
+        }
+
+        .php-note {
+            background: #1a1300;
+            border: 1px solid #3a2d00;
+            border-radius: 8px;
+            padding: 10px 14px;
+            margin-bottom: 14px;
+            font-size: 12px;
+            color: var(--yellow);
+        }
+
+        .php-note strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">
+            <div class="logo-icon">📁</div>
+            FileManager
+            <span class="logo-sub">/ PHP Lab Project</span>
+        </div>
+        <div class="nav-stats">
+            <div><strong id="stat-count">3</strong> files</div>
+            <div><strong id="stat-size">68.4 KB</strong> total</div>
+            <div class="nav-path">uploads/</div>
+        </div>
+    </nav>
+
+    <div class="php-note">
+        <strong>&#9432; This is an interactive HTML preview.</strong>
+        The real version (mini_file_manager.php) requires XAMPP/WAMP/MAMP running. Place the .php file in
+        <code>htdocs/</code> and open <code>http://localhost/mini_file_manager.php</code>
+    </div>
+
+    <div id="alert-area"></div>
+
+    <!-- UPLOAD CARD -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">⬆ Upload file</div>
+        </div>
+        <div class="drop-zone" id="dropzone" onclick="document.getElementById('fi').click()">
+            <div class="drop-icon">☁️</div>
+            <div class="drop-label">Click or drag a file here</div>
+            <div class="drop-sub">Any file type — PDF, image, text, video, etc.</div>
+            <div class="chosen" id="chosen"></div>
+            <input type="file" id="fi" style="display:none" onchange="selectFile(this)">
+        </div>
+        <div class="btn-upload" onclick="uploadFile()">⬆ Upload Now</div>
+    </div>
+
+    <!-- FILE LIST CARD -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">📋 Uploaded files</div>
+            <span class="count-badge" id="badge">3</span>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>File name</th>
+                    <th>Size</th>
+                    <th>Last modified</th>
+                    <th>MIME type</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+        </table>
+        <div class="empty-state" id="empty" style="display:none">
+            <div class="empty-icon">🗂</div>
+            <p>No files yet. Upload your first file above!</p>
+        </div>
+    </div>
+
+    <footer>
+        PHP functions used: <code>$_FILES</code> <code>move_uploaded_file()</code> <code>scandir()</code>
+        <code>filesize()</code> <code>filemtime()</code> <code>unlink()</code>
+        <code>header()</code> <code>readfile()</code> <code>is_file()</code> <code>mkdir()</code>
+    </footer>
+
+    <script>
+        const ICONS = { pdf: '📄', doc: '📝', docx: '📝', xls: '📊', xlsx: '📊', ppt: '📋', pptx: '📋', jpg: '🖼', jpeg: '🖼', png: '🖼', gif: '🖼', svg: '🖼', mp4: '🎬', mov: '🎬', mp3: '🎵', wav: '🎵', zip: '🗜', rar: '🗜', txt: '📃', csv: '📊', json: '📦', php: '🐘', js: '📜', css: '🎨', html: '🌐' };
+        const MIMES = { pdf: 'application/pdf', jpg: 'image/jpeg', jpeg: 'image/jpeg', png: 'image/png', gif: 'image/gif', mp4: 'video/mp4', mp3: 'audio/mpeg', zip: 'application/zip', txt: 'text/plain', csv: 'text/csv', json: 'application/json', php: 'application/x-php', js: 'text/javascript', css: 'text/css', html: 'text/html' };
+        const icon = e => ICONS[e] || '📎';
+        const mime = e => MIMES[e] || 'application/octet-stream';
+        const fmt = b => b < 1024 ? b + ' B' : b < 1048576 ? (b / 1024).toFixed(1) + ' KB' : (b / 1048576).toFixed(1) + ' MB';
+        const fmtDate = ts => { const d = new Date(ts); return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) + ', ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }); };
+
+        let files = [
+            { name: 'assignment.pdf', size: 43520, modified: Date.now() - 172800000, ext: 'pdf' },
+            { name: 'notes.txt', size: 1280, modified: Date.now() - 3600000, ext: 'txt' },
+            { name: 'photo.png', size: 23800, modified: Date.now() - 7200000, ext: 'png' },
+        ];
+        let sel = null;
+
+        function render() {
+            const tb = document.getElementById('tbody');
+            const em = document.getElementById('empty');
+            document.getElementById('badge').textContent = files.length;
+            document.getElementById('stat-count').textContent = files.length;
+            document.getElementById('stat-size').textContent = fmt(files.reduce((a, f) => a + f.size, 0));
+            if (!files.length) { tb.innerHTML = ''; em.style.display = 'block'; return; }
+            em.style.display = 'none';
+            tb.innerHTML = files.map((f, i) => `
+    <tr>
+      <td><div class="fcell"><span class="ficon">${icon(f.ext)}</span><span class="fname">${f.name}</span></div></td>
+      <td class="fsize">${fmt(f.size)}</td>
+      <td class="fdate">${fmtDate(f.modified)}</td>
+      <td class="fmime">${mime(f.ext)}</td>
+      <td><div class="acts">
+        <button class="btn-dl" onclick="dl(${i})">⬇ Download</button>
+        <button class="btn-del" onclick="del(${i})">🗑 Delete</button>
+      </div></td>
+    </tr>`).join('');
+        }
+
+        function alert2(msg, type) {
+            const a = document.getElementById('alert-area');
+            a.innerHTML = `<div class="alert alert-${type}">${type === 'success' ? '✅' : '❌'} ${msg}</div>`;
+            setTimeout(() => a.innerHTML = '', 3000);
+        }
+
+        function selectFile(inp) {
+            sel = inp.files[0];
+            document.getElementById('chosen').textContent = sel ? sel.name : '';
+        }
+
+        function uploadFile() {
+            if (!sel) { alert2('Please select a file first.', 'error'); return; }
+            const ext = sel.name.split('.').pop().toLowerCase();
+            files.unshift({ name: sel.name, size: sel.size, modified: Date.now(), ext });
+            alert2(`"${sel.name}" uploaded! (PHP: move_uploaded_file() saves to uploads/)`, 'success');
+            sel = null;
+            document.getElementById('chosen').textContent = '';
+            document.getElementById('fi').value = '';
+            render();
+        }
+
+        function dl(i) {
+            alert2(`Downloading "${files[i].name}"... In PHP: header('Content-Disposition: attachment') + readfile()`, 'success');
+        }
+
+        function del(i) {
+            if (!confirm(`Delete "${files[i].name}"?`)) return;
+            const n = files[i].name;
+            files.splice(i, 1);
+            alert2(`"${n}" deleted. PHP: unlink() removes the file from disk.`, 'success');
+            render();
+        }
+
+        // Drag and drop
+        const dz = document.getElementById('dropzone');
+        dz.addEventListener('dragover', e => { e.preventDefault(); dz.style.borderColor = '#58a6ff'; });
+        dz.addEventListener('dragleave', () => dz.style.borderColor = '');
+        dz.addEventListener('drop', e => {
+            e.preventDefault(); dz.style.borderColor = '';
+            const f = e.dataTransfer.files[0];
+            if (f) { sel = f; document.getElementById('chosen').textContent = f.name; }
+        });
+
+        render();
+    </script>
+</body>
+
+</html>
