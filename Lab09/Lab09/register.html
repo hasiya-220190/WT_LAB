@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registration form</title>
+
+    <style>
+        body{
+            background: linear-gradient(to right, lightblue, #0072ff);
+            font-family: Arial;
+        }
+
+        .form-box{
+            width: 400px;              /* FIXED (was 350%) */
+            background: white;
+            padding: 30px;
+            margin: 100px auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+
+        table{
+            width: 100%;
+        }
+
+        td{
+            padding: 8px;
+            font-size: 14px;
+        }
+
+        input, select{
+            width: 100%;
+            padding: 6px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .buttons{
+            width: 100%;
+            background: #0072ff;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .buttons:hover{
+            background: #005fcc;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="form-box">
+    <h2 align="center">Registration Form</h2>
+
+    <form method="post"  action="register.php">
+        <table>
+            <tr>
+                <td><label>name</label></td>
+                <td><input type="text" name="name" placeholder="Ex: Durga" required></td>
+            </tr>
+
+            <tr>
+                <td><label>Mobile Number</label></td>
+                <td><input type="tel" name="mobile" placeholder="000-000-0000" required></td>
+            </tr>
+
+            <tr>
+                <td><label>Email</label></td>
+                <td><input type="email" name="email" placeholder="aswani@gmail.com" required></td>
+            </tr>
+
+            <tr>
+                <td><label>Password</label></td>
+                <td><input type="password" name="password" placeholder="Min 5 characters" required></td>
+            </tr>
+
+            <tr>
+                <td><label>Confirm Password</label></td>
+                <td><input type="password" name="confirm" required></td>
+            </tr>
+
+            <tr>
+                <td><label>DOB</label></td>
+                <td><input type="date" name="dob"></td>
+            </tr>
+
+            <tr>
+                <td><label>Gender</label></td>
+                <td>
+                    <input type="radio" name="gender" value="M"> Male
+                
+                
+                    <input type="radio" name="gender" value="F"> Female
+                
+                
+                    <input type="radio" name="gender" value="C"> Custom
+                </td>
+            </tr>
+
+            <tr>
+                <td><label>Country</label></td>
+                <td>
+                    <select name="country">
+                        <option value="">Select</option>
+                        <option value="India">INDIA</option>
+                        <option value="USA">USA</option>
+                        <option value="China">CHINA</option>
+                    </select>
+                </td>
+            </tr>
+            
+
+            
+
+           
+        </table>
+
+        <!-- FIXED BUTTON SYNTAX -->
+        <input type="submit" value="Create Account" class="buttons">
+    </form>
+</div>
+
+</body>
+</html>
+ 
